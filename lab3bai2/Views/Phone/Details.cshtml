@@ -1,0 +1,92 @@
+﻿@model lab3bai2.Models.Phone
+
+@{
+    ViewData["Title"] = "Chi tiết - " + (Model?.Brand ?? "") + " " + (Model?.Name ?? "");
+    var img = string.IsNullOrWhiteSpace(Model?.Image) ? "/images/no-image.png" : Model.Image;
+    var priceText = String.Format("{0:N0}₫", Model?.Price ?? 0);
+    var oldPriceText = String.Format("{0:N0}₫", (Model?.Price ?? 0) * 1.15m);
+}
+
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>@ViewData["Title"]</title>
+  <link rel="stylesheet" href="~/css/site.css" />
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <style>
+    /* small additions specific to details page */
+    .breadcrumbs { font-size:13px; color:var(--muted); margin-bottom:12px; }
+    .product-detail { display:flex; gap:24px; align-items:flex-start; }
+    .pd-left { width:460px; max-width:46%; }
+    .pd-right { flex:1; min-width:200px; }
+    .specs { margin-top:14px; background:#fff; padding:12px; border-radius:10px; box-shadow:var(--shadow); }
+    .price-large { font-size:22px; font-weight:900; color:#0f1724; }
+    .old-small { color:var(--muted); text-decoration:line-through; font-size:14px; }
+    .buy-row { margin-top:14px; display:flex; gap:10px; align-items:center; }
+    .note { margin-top:12px; color:var(--muted); font-size:13px; }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <div style="margin-bottom:12px;">
+      <a href="@Url.Action("Index","Phone")" style="text-decoration:none;color:var(--muted)">← Quay lại danh mục</a>
+    </div>
+
+    <div class="breadcrumbs">Trang chủ / Điện thoại / <strong>@Model.Brand @Model.Name</strong></div>
+
+    <div class="product-detail">
+      <div class="pd-left">
+        <div class="card-large" style="padding:0;overflow:hidden;">
+          <img src="@Url.Content(img)" alt="@Model.Name" style="width:100%;height:420px;object-fit:contain;background:#fff" />
+        </div>
+
+        <div class="specs">
+          <h4 style="margin:0 0 8px 0;">Thông số chính</h4>
+          <dl>
+            <dt style="font-weight:700;float:left;width:140px;">Hãng</dt><dd style="margin:0 0 8px 150px">@Model.Brand</dd>
+            <dt style="font-weight:700;float:left;width:140px;">Màn hình</dt><dd style="margin:0 0 8px 150px">Xem mô tả / mẫu</dd>
+            <dt style="font-weight:700;float:left;width:140px;">Pin</dt><dd style="margin:0 0 8px 150px">Tùy model</dd>
+            <div style="clear:both"></div>
+          </dl>
+        </div>
+      </div>
+
+      <div class="pd-right">
+        <h1 style="margin:0 0 6px 0;">@Model.Brand @Model.Name</h1>
+        <div class="kicker">@Model.Description</div>
+
+        <div style="margin-top:12px;">
+          <div class="price-large">@priceText</div>
+          <div class="old-small">Giá cũ: @oldPriceText</div>
+        </div>
+
+        <div class="buy-row">
+          <button class="btn-primary" onclick="alert('Thêm vào giỏ mẫu')"><i class="fa-solid fa-cart-plus"></i> Thêm vào giỏ</button>
+          <button class="btn-outline" onclick="location.href='@Url.Action("Index","Phone")'">Mua ngay</button>
+        </div>
+
+        <div class="note">
+          <p><strong>Bảo hành:</strong> 12 tháng chính hãng. <strong>Giao hàng:</strong> trong 3-5 ngày.</p>
+        </div>
+
+        <div style="margin-top:20px;">
+          <h4>Chi tiết mô tả</h4>
+          <p style="color:var(--muted)">@Model.Description</p>
+        </div>
+      </div>
+    </div>
+
+    <div style="margin-top:28px;">
+      <h3>Sản phẩm liên quan</h3>
+      <div class="products-grid" style="margin-top:12px;">
+        @* Show 3 sample cards (reuse model list from TestPhone in controller if you want) *@
+        @* If you want dynamic related items, controller should send them in a ViewModel *@
+      </div>
+    </div>
+
+    <div class="page-footer">© Shop điện thoại - FPT Polytechnic</div>
+  </div>
+</body>
+</html>

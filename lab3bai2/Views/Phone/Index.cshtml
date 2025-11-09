@@ -1,0 +1,123 @@
+﻿@model List<lab3bai2.Models.Phone>
+
+@{
+    ViewData["Title"] = "Shop Điện Thoại - Danh mục";
+}
+
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>@ViewData["Title"]</title>
+
+  <!-- Font Awesome cho icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.6.0/css/all.min.css" />
+  <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+  <div class="container">
+    <div class="catalog-header">
+      <div>
+        <div class="catalog-title">SIÊU THỊ ĐIỆN THOẠI</div>
+        <div class="catalog-sub">Điện thoại mới nhất, giá tốt, bảo hành chính hãng</div>
+      </div>
+      <div>
+        <span class="kicker">Tổng: <strong>@Model.Count</strong> sản phẩm</span>
+      </div>
+    </div>
+
+    <div class="shop-grid">
+      <!-- Sidebar -->
+      <aside class="sidebar" aria-label="Bộ lọc">
+        <div class="search-box">
+          <input type="search" id="search" placeholder="Tìm tên, hãng, tính năng..." />
+          <button type="button" onclick="searchList()">Tìm</button>
+        </div>
+
+        <div class="filter-section">
+          <h4>Hãng</h4>
+          <label><input type="checkbox" /> Apple</label>
+          <label><input type="checkbox" /> Samsung</label>
+          <label><input type="checkbox" /> Xiaomi</label>
+          <label><input type="checkbox" /> Google</label>
+        </div>
+
+        <div class="filter-section">
+          <h4>Khoảng giá</h4>
+          <div class="price-range">
+            <input type="text" placeholder="Từ (VNĐ)" />
+            <input type="text" placeholder="Đến (VNĐ)" />
+          </div>
+        </div>
+
+        <div class="filter-section">
+          <h4>Tùy chọn</h4>
+          <label><input type="checkbox" /> Trả góp</label>
+          <label><input type="checkbox" /> Hàng chính hãng</label>
+        </div>
+      </aside>
+
+      <!-- Products -->
+      <section class="products" aria-label="Danh sách sản phẩm">
+        <div class="products-grid" id="products-grid">
+          @foreach(var p in Model)
+          {
+              var img = string.IsNullOrWhiteSpace(p.Image) ? "/images/no-image.png" : p.Image;
+              var price = String.Format("{0:N0}₫", p.Price);
+              var oldPrice = p.Price * 1.15m; // just sample old price
+              var oldText = String.Format("{0:N0}₫", oldPrice);
+              <article class="product" data-name="@p.Name.ToLower()" data-brand="@p.Brand.ToLower()">
+                <div class="prod-media">
+                  <img src="@Url.Content(img)" alt="@p.Name" />
+                  <div class="badge">Giảm 10%</div>
+                  <button class="fav" title="Yêu thích"><i class="fa-regular fa-heart"></i></button>
+                </div>
+
+                <div class="info">
+                  <div class="title">@p.Brand @p.Name</div>
+                  <div class="meta">@p.Description</div>
+
+                  <div class="price-row">
+                    <div>
+                      <div class="price">@price</div>
+                      <div class="price-old">@oldText</div>
+                    </div>
+                    <div class="rating">
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star"></i>
+                      <i class="fa-solid fa-star-half-stroke"></i>
+                      <i class="fa-regular fa-star"></i>
+                    </div>
+                  </div>
+
+                  <div class="actions">
+                    <a class="btn-primary" href="@Url.Action("Details","Phone", new { id = p.Id })">Xem chi tiết</a>
+                    <a class="btn-outline" href="#">Mua ngay</a>
+                  </div>
+                </div>
+              </article>
+          }
+        </div>
+
+        <div class="page-footer">© Shop điện thoại - FPT Polytechnic</div>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    // very small client-side search/filter (works without server)
+    function searchList() {
+      const q = document.getElementById('search').value.trim().toLowerCase();
+      const cards = document.querySelectorAll('#products-grid .product');
+      cards.forEach(c => {
+        const name = c.getAttribute('data-name') || '';
+        const brand = c.getAttribute('data-brand') || '';
+        if (!q || name.includes(q) || brand.includes(q)) c.style.display = '';
+        else c.style.display = 'none';
+      });
+    }
+  </script>
+</body>
+</html>
