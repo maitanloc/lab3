@@ -1,0 +1,29 @@
+﻿@model lab3.Models.Customer
+
+@{
+    ViewData["Title"] = "Chi tiết - " + (Model?.Subname ?? "");
+    var img = string.IsNullOrWhiteSpace(Model?.Image) ? "/images/no-image.png" : Model.Image;
+}
+
+<!doctype html>
+<html lang="vi">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>@ViewData["Title"]</title>
+  <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+  <main class="wrap detail-wrap">
+    <div class="card-large">
+      <img src="@Url.Content(img)" alt="@Model.Subname" />
+      <h2>@Model.Subname</h2>
+      <p class="desc">Đây là chuyên ngành: <strong>@Model.Subname</strong>.</p>
+      <div class="actions">
+        <a class="btn secondary" href="@Url.Action("Index","Customer")">⬅ Quay lại</a>
+        <a class="btn" href="@Url.Action("Index","Home")">Về trang chủ</a>
+      </div>
+    </div>
+  </main>
+</body>
+</html>

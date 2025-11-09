@@ -1,0 +1,69 @@
+﻿@model List<lab3.Models.Customer>
+
+@{
+    ViewData["Title"] = "CÔNG NGHỆ THÔNG TIN - FPoly";
+}
+
+<!doctype html>
+<html lang="vi">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width,initial-scale=1" />
+    <title>@ViewData["Title"]</title>
+
+    <link rel="stylesheet" href="~/css/site.css" />
+</head>
+<body>
+    <main class="wrap">
+        <header class="hero">
+            <h1>CÔNG NGHỆ THÔNG TIN</h1>
+            <p class="desc-text">
+                Ngành <strong>Công nghệ thông tin</strong> tại FPoly đào tạo các chuyên ngành mũi nhọn.
+            </p>
+        </header>
+
+        <section>
+            <div class="row-wrap">
+                @foreach (var c in Model)
+                {
+                    var img = string.IsNullOrWhiteSpace(c.Image) ? "/images/no-image.png" : c.Image;
+                    var shortDesc = "";
+                    if (!string.IsNullOrWhiteSpace(c.Subname))
+                    {
+                        var lower = c.Subname.ToLower();
+                        if (lower.Contains("đồ họa")) shortDesc = "Thiết kế sáng tạo, xử lý ảnh và đồ họa truyền thông.";
+                        else if (lower.Contains("di động")) shortDesc = "Phát triển ứng dụng cho điện thoại và thiết bị di động.";
+                        else if (lower.Contains("website")) shortDesc = "Xây dựng website hiện đại, UX/UI và frontend/backend.";
+                        else shortDesc = "Lập trình ứng dụng và quản trị phần mềm doanh nghiệp.";
+                    }
+
+                    <article class="card" role="article" aria-labelledby="title-@c.Id">
+                        <div class="img-wrap" aria-hidden="false">
+                            <img src="@Url.Content(img)" alt="@c.Subname" />
+                            <div class="img-footer">
+                                <span class="name" id="title-@c.Id">@c.Subname</span>
+                                <span class="badge">CNTT</span>
+                            </div>
+                        </div>
+
+                        <div class="body">
+                            <p>@shortDesc</p>
+
+                            <div class="actions">
+                               <a class="btn" href="@Url.Action("Details","Customer", new { id = c.Id })">
+    Xem chi tiết
+</a>
+                                <a class="btn secondary" href="@Url.Action("Index","Home")">Liên hệ</a>
+                            </div>
+                        </div>
+                    </article>
+                }
+            </div>
+        </section>
+
+        <footer class="page-footer">
+            © FPT Polytechnic - Khoa Công Nghệ Thông Tin
+        </footer>
+    </main>
+</body>
+</html>
